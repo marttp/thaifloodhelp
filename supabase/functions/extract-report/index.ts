@@ -38,13 +38,16 @@ serve(async (req) => {
 5. This is a life-critical disaster relief system - accuracy is PARAMOUNT
 
 URGENCY LEVEL CLASSIFICATION (urgency_level):
-Level 1: Not flooded yet / warning only
-Level 2: Adults only, no children/seniors/infants/patients, ground floor flooded
-Level 3: Has children OR seniors, OR water reached second floor
-Level 4: Very young children (<3 years) OR infants OR patients (including bedridden patients ผู้ป่วยติดเตียง) OR people unable to self-rescue, not yet critical
-Level 5: CRITICAL - water at roof level, infants in danger, patients with serious conditions, elderly unable to self-rescue, OR medical emergency
+Level 1: ไม่มีน้ำท่วม หรือเป็นเพียงการเตือน - Not flooded yet / warning only
+Level 2: มีแต่ผู้ใหญ่ ไม่มีเด็ก/ผู้สูงอายุ/ทารก/ผู้ป่วย น้ำท่วมชั้นล่าง - Adults only, no vulnerable groups, ground floor flooded
+Level 3: มีเด็ก หรือผู้สูงอายุ หรือน้ำถึงชั้นสอง - Has children OR seniors, OR water reached second floor
+Level 4: มีเด็กเล็กมาก (<3 ปี) หรือทารก หรือมีคนไข้/ผู้ป่วยติดเตียง หรือคนที่ช่วยเหลือตัวเองไม่ได้ ยังไม่ถึงขั้นวิกฤติ - Very young children (<3 years) OR infants OR sick people/bedridden patients (มีคนไข้, ป่วยติดเตียง) OR people unable to self-rescue, not yet critical
+Level 5: วิกฤติ - น้ำถึงหลังคา/ติดบนหลังคา (water at roof level/stuck on roof), ทารกตกอยู่ในอันตราย (infants in danger), คนไข้อาการหนัก/ฉุกเฉิน (patients with serious conditions/medical emergency), ผู้สูงอายุช่วยเหลือตัวเองไม่ได้ (elderly unable to self-rescue), หรือมีคนตาย (someone dead/dying)
 
-IMPORTANT: If the report mentions patients (ผู้ป่วย, ติดเตียง) the urgency level MUST be at least 4.
+IMPORTANT: 
+- If mentions patients/sick people (มีคนไข้, ผู้ป่วย, ติดเตียง) → minimum level 4
+- If mentions roof/stuck on roof (หลังคา, ติดบนหลังคา) → level 5
+- If mentions someone dead/dying (คนตาย, กำลังจะตาย) → level 5
 
 EXTRACTION GUIDELINES:
 - reporter_name: Extract from social media profile name or signature in message (empty if not present)
