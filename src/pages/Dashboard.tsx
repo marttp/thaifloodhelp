@@ -29,6 +29,7 @@ import { toast } from "sonner";
 import QueryBot from "@/components/QueryBot";
 import { Checkbox } from "@/components/ui/checkbox";
 import ReportHeatmap from "@/components/ReportHeatmap";
+import { PhoneList } from "@/components/PhoneList";
 
 interface Report {
   id: string;
@@ -425,9 +426,9 @@ const Dashboard = () => {
                             <TableCell className="font-medium">
                               {report.name} {report.lastname}
                             </TableCell>
-                            <TableCell className="max-w-xs truncate">{report.address}</TableCell>
-                            <TableCell>
-                              {report.phone.length > 0 ? report.phone.join(', ') : '-'}
+                            <TableCell className="max-w-[150px] truncate">{report.address}</TableCell>
+                            <TableCell className="whitespace-nowrap">
+                              <PhoneList phones={report.phone} />
                             </TableCell>
                             <TableCell className="text-center">{report.number_of_adults}</TableCell>
                             <TableCell className="text-center">{report.number_of_children}</TableCell>
@@ -449,7 +450,7 @@ const Dashboard = () => {
                                          <p className="break-words"><span className="font-medium">ชื่อ:</span> {report.name} {report.lastname}</p>
                                          <p className="break-words"><span className="font-medium">ผู้รายงาน:</span> {report.reporter_name || '-'}</p>
                                          <p className="break-words"><span className="font-medium">ที่อยู่:</span> {report.address || '-'}</p>
-                                         <p className="break-words"><span className="font-medium">เบอร์โทร:</span> {report.phone?.length > 0 ? report.phone.join(', ') : '-'}</p>
+                                         <div className="break-words"><span className="font-medium">เบอร์โทร:</span> <PhoneList phones={report.phone || []} /></div>
                                          <p className="break-words"><span className="font-medium">ตำแหน่ง:</span> {report.location_lat && report.location_long ? `${report.location_lat}, ${report.location_long}` : '-'}</p>
                                          {report.map_link && (
                                            <p className="break-words">
