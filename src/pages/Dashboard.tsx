@@ -23,6 +23,7 @@ import {
   Loader2,
   ChevronDown,
   ChevronRight,
+  Phone,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -423,7 +424,25 @@ const Dashboard = () => {
                             </TableCell>
                             <TableCell className="max-w-xs truncate">{report.address}</TableCell>
                             <TableCell>
-                              {report.phone.length > 0 ? report.phone.join(', ') : '-'}
+                              {report.phone.length > 0 ? (
+                                <div className="flex flex-wrap gap-1">
+                                  {report.phone.map((phoneNumber, idx) => (
+                                    <Button
+                                      key={idx}
+                                      variant="outline"
+                                      size="sm"
+                                      className="gap-1 h-7"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        window.location.href = `tel:${phoneNumber}`;
+                                      }}
+                                    >
+                                      <Phone className="h-3 w-3" />
+                                      โทร {report.phone.length > 1 ? `(${idx + 1})` : ''}
+                                    </Button>
+                                  ))}
+                                </div>
+                              ) : '-'}
                             </TableCell>
                             <TableCell className="text-center">{report.number_of_adults}</TableCell>
                             <TableCell className="text-center">{report.number_of_children}</TableCell>
@@ -445,7 +464,28 @@ const Dashboard = () => {
                                         <p className="break-words"><span className="font-medium">ชื่อ:</span> {report.name} {report.lastname}</p>
                                         <p className="break-words"><span className="font-medium">ผู้รายงาน:</span> {report.reporter_name || '-'}</p>
                                         <p className="break-words"><span className="font-medium">ที่อยู่:</span> {report.address || '-'}</p>
-                                        <p className="break-words"><span className="font-medium">เบอร์โทร:</span> {report.phone?.length > 0 ? report.phone.join(', ') : '-'}</p>
+                                        <div className="break-words">
+                                          <span className="font-medium">เบอร์โทร:</span>{' '}
+                                          {report.phone?.length > 0 ? (
+                                            <div className="inline-flex flex-wrap gap-2 mt-1">
+                                              {report.phone.map((phoneNumber, idx) => (
+                                                <Button
+                                                  key={idx}
+                                                  variant="outline"
+                                                  size="sm"
+                                                  className="gap-1 h-7 text-xs"
+                                                  onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    window.location.href = `tel:${phoneNumber}`;
+                                                  }}
+                                                >
+                                                  <Phone className="h-3 w-3" />
+                                                  {phoneNumber}
+                                                </Button>
+                                              ))}
+                                            </div>
+                                          ) : '-'}
+                                        </div>
                                         <p className="break-words"><span className="font-medium">ตำแหน่ง:</span> {report.location_lat && report.location_long ? `${report.location_lat}, ${report.location_long}` : '-'}</p>
                                       </div>
                                     </div>
