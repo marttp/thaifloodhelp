@@ -23,6 +23,7 @@ import {
   Loader2,
   ChevronDown,
   ChevronRight,
+  Download,
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
@@ -91,6 +92,94 @@ const Dashboard = () => {
 
     return sortDirection === 'asc' ? aVal - bVal : bVal - aVal;
   });
+
+  const exportToCSV = () => {
+    if (filteredReports.length === 0) {
+      toast.error('ไม่มีข้อมูลให้ส่งออก');
+      return;
+    }
+
+    try {
+      // Define CSV headers
+      const headers = [
+        'ID',
+        'ชื่อ',
+        'นามสกุล',
+        'ผู้รายงาน',
+        'ที่อยู่',
+        'เบอร์โทรศัพท์',
+        'จำนวนผู้ใหญ่',
+        'จำนวนเด็ก',
+        'จำนวนทารก',
+        'จำนวนผู้สูงอายุ',
+        'จำนวนผู้ป่วย',
+        'อาการ/สภาพสุขภาพ',
+        'ความช่วยเหลือที่ต้องการ',
+        'ประเภทความช่วยเหลือ',
+        'ข้อมูลเพิ่มเติม',
+        'ระดับความเร่งด่วน',
+        'สถานะ',
+        'ตำแหน่ง (Latitude)',
+        'ตำแหน่ง (Longitude)',
+        'วันที่บันทึก',
+        'แก้ไขล่าสุด',
+      ];
+
+      // Convert data to CSV rows
+      const csvRows = filteredReports.map((report) => {
+        return [
+          report.id,
+          report.name || '',
+          report.lastname || '',
+          report.reporter_name || '',
+          `"${(report.address || '').replace(/"/g, '""')}"`, // Escape quotes
+          `"${report.phone?.join(', ') || ''}"`,
+          report.number_of_adults || 0,
+          report.number_of_children || 0,
+          report.number_of_infants || 0,
+          report.number_of_seniors || 0,
+          report.number_of_patients || 0,
+          `"${(report.health_condition || '').replace(/"/g, '""')}"`,
+          `"${(report.help_needed || '').replace(/"/g, '""')}"`,
+          `"${report.help_categories?.join(', ') || ''}"`,
+          `"${(report.additional_info || '').replace(/"/g, '""')}"`,
+          report.urgency_level,
+          report.status || '',
+          report.location_lat || '',
+          report.location_long || '',
+          new Date(report.created_at).toLocaleString('th-TH'),
+          new Date(report.updated_at).toLocaleString('th-TH'),
+        ].join(',');
+      });
+
+      // Combine headers and rows
+      const csvContent = [headers.join(','), ...csvRows].join('\n');
+
+      // Add BOM for proper UTF-8 encoding in Excel
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      const timestamp = new Date().toISOString().slice(0, 10);
+      link.setAttribute('download', `flood_reports_${timestamp}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success('ส่งออกข้อมูลสำเร็จ', {
+        description: `ส่งออก ${filteredReports.length} รายการ`,
+      });
+    } catch (error) {
+      console.error('CSV export error:', error);
+      toast.error('ไม่สามารถส่งออกข้อมูลได้', {
+        description: 'กรุณาลองใหม่อีกครั้ง',
+      });
+    }
+  };
 
   useEffect(() => {
     fetchReports();
@@ -365,8 +454,8 @@ const Dashboard = () => {
                     <div
                       key={category.id}
                       className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${selectedCategories.includes(category.id)
-                          ? 'bg-primary/10 border-primary'
-                          : 'bg-muted/30 border-border hover:bg-muted/50'
+                        ? 'bg-primary/10 border-primary'
+                        : 'bg-muted/30 border-border hover:bg-muted/50'
                         }`}
                       onClick={() => {
                         setSelectedCategories((prev) =>
@@ -394,6 +483,17 @@ const Dashboard = () => {
 
         {/* Heatmap */}
         <ReportHeatmap reports={filteredReports} />
+
+        <div className="flex justify-end">
+          <Button
+            onClick={exportToCSV}
+            variant="outline"
+            disabled={filteredReports.length === 0}
+          >
+            <Download className="mr-2 h-4 w-4" />
+            ส่งออก CSV ({filteredReports.length} รายการ)
+          </Button>
+        </div>
 
         {/* Table */}
         <Card>
