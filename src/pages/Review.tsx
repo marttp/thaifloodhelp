@@ -60,6 +60,32 @@ const Review = () => {
     }
   }, [location, navigate]);
 
+  const checkForDuplicates = async (rawMessage: string) => {
+    try {
+      // Generate embedding for the raw message
+      const { data: embeddingData, error: embeddingError } = await supabase.functions.invoke(
+        'generate-embedding',
+        { body: { text: rawMessage } }
+      );
+
+      if (embeddingError) throw embeddingError;
+
+      // Check for duplicates
+      const { data: duplicateData, error: duplicateError } = await supabase.functions.invoke(
+        'check-duplicates',
+        { body: { embedding: embeddingData.embedding, threshold: 0.85 } }
+      );
+
+      if (duplicateError) throw duplicateError;
+
+      return duplicateData.duplicates || [];
+    } catch (err) {
+      console.error('Error checking duplicates:', err);
+      // On error, return empty array to proceed with save
+      return [];
+    }
+  };
+
 
   const performSave = async () => {
     if (!formData) return;
@@ -112,12 +138,12 @@ const Review = () => {
         setFormData(reports[nextIndex]);
         setPhoneInput(reports[nextIndex].phone?.join(', ') || '');
         
-        toast.success(`บันทึกรายการที่ ${currentIndex + 1} สำเร็จ!`, {
+        toast.success('ขอบคุณค่ะ ข้อมูลได้ถูกบันทึกแล้ว', {
           description: `เหลืออีก ${reports.length - nextIndex} รายการ`
         });
       } else {
         // All done
-        toast.success('บันทึกข้อมูลทั้งหมดสำเร็จ!', {
+        toast.success('ขอบคุณค่ะ ข้อมูลได้ถูกบันทึกแล้ว', {
           description: `บันทึกทั้งหมด ${reports.length} รายการเรียบร้อย`
         });
         navigate('/dashboard');
@@ -134,7 +160,40 @@ const Review = () => {
 
   const handleSave = async () => {
     if (!formData) return;
-    await performSave();
+
+    setIsSaving(true);
+
+    try {
+      // Check for duplicates first
+      const foundDuplicates = await checkForDuplicates(formData.raw_message);
+
+      if (foundDuplicates.length > 0) {
+        // Duplicate found - don't save, just show success message
+        console.log('Duplicate detected, skipping save');
+        
+        // Move to next report if in multi-report mode
+        if (reports.length > 1 && currentIndex < reports.length - 1) {
+          setCurrentIndex(currentIndex + 1);
+          setFormData(reports[currentIndex + 1]);
+          setPhoneInput(reports[currentIndex + 1].phone?.join(', ') || '');
+          toast.success('ขอบคุณค่ะ ข้อมูลได้ถูกบันทึกแล้ว');
+        } else {
+          // Last report or single report
+          toast.success('ขอบคุณค่ะ ข้อมูลได้ถูกบันทึกแล้ว');
+          navigate('/dashboard');
+        }
+      } else {
+        // No duplicate - save the record
+        await performSave();
+      }
+    } catch (err) {
+      console.error('Error during save:', err);
+      toast.error('เกิดข้อผิดพลาด', {
+        description: 'กรุณาลองใหม่อีกครั้ง'
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   if (!formData) {
