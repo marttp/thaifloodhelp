@@ -110,20 +110,20 @@ const Landing = () => {
 
           <motion.h1 
             variants={itemVariants}
-            className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-6"
+            className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight"
           >
-            ทุกวินาที <span className="text-blue-500">มีคนรอ</span>
+            <span className="text-blue-500">Thai Flood Help</span> - รวมข้อมูลที่กระจัดกระจาย
             <br />
-            <span className="text-orange-500">ความช่วยเหลือ</span>
+            ใน Social Media และช่องทางต่างๆ
+            <br />
+            <span className="text-orange-500">สกัดข้อมูลสำคัญด้วย AI</span> เพื่อการช่วยเหลือที่รวดเร็วขึ้น
           </motion.h1>
 
           <motion.p 
             variants={itemVariants}
-            className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto"
+            className="text-2xl md:text-3xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto font-medium"
           >
-            Thai Flood Help - รวมข้อมูลที่กระจัดกระจายใน Social Media และช่องทางต่างๆ
-            <br />
-            สกัดข้อมูลสำคัญด้วย AI เพื่อการช่วยเหลือที่รวดเร็วขึ้น
+            ทุกวินาที <span className="text-blue-600 dark:text-blue-400">มีคนรอ</span> ความช่วยเหลือ
           </motion.p>
 
           <motion.div
