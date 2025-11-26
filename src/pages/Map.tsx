@@ -22,6 +22,7 @@ const Map = () => {
     ]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedBasemap, setSelectedBasemap] = useState('osm');
+    const [showFloodLayer, setShowFloodLayer] = useState(false);
     const { toast } = useToast();
 
     // Get map configuration from env
@@ -181,6 +182,7 @@ const Map = () => {
                     zoom={mapConfig.useDefaultLocation ? mapConfig.defaultZoom : 6}
                     showLegend={true}
                     selectedBasemap={selectedBasemap}
+                    showFloodLayer={showFloodLayer}
                 />
             </div>
 
@@ -204,6 +206,8 @@ const Map = () => {
             <BasemapControl
                 selectedBasemap={selectedBasemap}
                 onBasemapChange={setSelectedBasemap}
+                showFloodLayer={showFloodLayer}
+                onFloodLayerToggle={setShowFloodLayer}
             />
         </div>
     );
