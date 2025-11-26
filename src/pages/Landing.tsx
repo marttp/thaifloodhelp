@@ -88,15 +88,15 @@ const Landing = () => {
           animate="visible"
           variants={containerVariants}
         >
-          <motion.h1
+          <motion.h1 
             variants={itemVariants}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-6 md:mb-8 leading-tight px-4"
           >
             Thai Flood Help
             <br />
-            <span className="text-white/90 text-2xl sm:text-3xl md:text-4xl lg:text-6xl block mt-2">รวมข้อมูลที่กระจัดกระจาย</span>
-            <br className="hidden sm:block" />
-            <span className="text-xl sm:text-2xl md:text-4xl lg:text-5xl block mt-2">ใน Social Media และช่องทางต่างๆ</span>
+            <span className="text-white/90 text-2xl sm:text-3xl md:text-4xl lg:text-6xl block mt-2">
+              รวมข้อมูลที่กระจัดกระจาย ใน Social Media และช่องทางต่างๆ
+            </span>
           </motion.h1>
 
           <motion.p 
