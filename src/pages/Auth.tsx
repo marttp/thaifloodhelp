@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLiff } from "@/contexts/LiffContext";
 import { Loader2 } from "lucide-react";
 
 const Auth = () => {
@@ -15,6 +16,7 @@ const Auth = () => {
   const location = useLocation();
   const { toast } = useToast();
   const { user } = useAuth();
+  const { login: liffLogin, isLiffInitialized, isLoading: isLiffLoading } = useLiff();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +36,7 @@ const Auth = () => {
 
     try {
       const redirectUrl = `${window.location.origin}/`;
-      
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -87,8 +89,8 @@ const Auth = () => {
     } catch (error: any) {
       toast({
         title: "เกิดข้อผิดพลาด",
-        description: error.message === "Invalid login credentials" 
-          ? "อีเมลหรือรหัสผ่านไม่ถูกต้อง" 
+        description: error.message === "Invalid login credentials"
+          ? "อีเมลหรือรหัสผ่านไม่ถูกต้อง"
           : error.message,
         variant: "destructive",
       });
@@ -115,6 +117,12 @@ const Auth = () => {
         variant: "destructive",
       });
       setLoading(false);
+    }
+  };
+
+  const handleLineSignIn = () => {
+    if (isLiffInitialized) {
+      liffLogin();
     }
   };
 
@@ -160,6 +168,23 @@ const Auth = () => {
                 </svg>
               )}
               เข้าสู่ระบบด้วย Google
+            </Button>
+
+            <Button
+              className="w-full bg-[#06C755] hover:bg-[#05b34c] text-white"
+              onClick={handleLineSignIn}
+              disabled={loading || isLiffLoading || !isLiffInitialized}
+            >
+              {isLiffLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.5c-5.52 0-10 3.58-10 8 0 4.42 4.48 8 10 8 5.52 0 10-3.58 10-8s-4.48-8-10-8zm0 14c-4.41 0-8-2.69-8-6s3.59-6 8-6 8 2.69 8 6-3.59 6-8 6z" />
+                  <path d="M12 11h-2v2h2v2h2v-2h2v-2h-2V9h-2v2z" />
+                  <path d="M24 10.5c0 4.42-4.48 8-10 8-1.08 0-2.11-.14-3.09-.39l-4.14 2.29c-.46.25-1.02-.08-1.02-.61v-2.04c-3.33-1.65-5.75-4.7-5.75-8.25C0 5.08 5.37 1.5 12 1.5s12 3.58 12 9z" />
+                </svg>
+              )}
+              เข้าสู่ระบบด้วย LINE
             </Button>
 
             <div className="relative">
