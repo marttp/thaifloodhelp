@@ -26,6 +26,8 @@ export type Database = {
           id: string
           last_contact_at: string | null
           lastname: string | null
+          line_display_name: string | null
+          line_user_id: string | null
           location_lat: number | null
           location_long: number | null
           map_link: string | null
@@ -53,6 +55,8 @@ export type Database = {
           id?: string
           last_contact_at?: string | null
           lastname?: string | null
+          line_display_name?: string | null
+          line_user_id?: string | null
           location_lat?: number | null
           location_long?: number | null
           map_link?: string | null
@@ -80,6 +84,8 @@ export type Database = {
           id?: string
           last_contact_at?: string | null
           lastname?: string | null
+          line_display_name?: string | null
+          line_user_id?: string | null
           location_lat?: number | null
           location_long?: number | null
           map_link?: string | null

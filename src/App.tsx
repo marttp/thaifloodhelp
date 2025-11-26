@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LiffProvider } from "./contexts/LiffContext";
 import Input from "./pages/Input";
 import SelectReports from "./pages/SelectReports";
 import Review from "./pages/Review";
@@ -17,6 +18,7 @@ import Navbar from "./components/Navbar";
 const queryClient = new QueryClient();
 
 const App = () => (
+  <LiffProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -40,8 +42,9 @@ const App = () => (
           <Footer />
         </div>
       </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </LiffProvider>
 );
 
 export default App;
