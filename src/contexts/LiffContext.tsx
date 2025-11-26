@@ -63,7 +63,7 @@ export function LiffProvider({ children }: { children: ReactNode }) {
             window.location.replace(`line://app/${LIFF_ID}`);
             setTimeout(() => { window.close(); }, 5000);
           } else {
-            await liff.init({ liffId: LIFF_ID, withLoginOnExternalBrowser: true });
+            await liff.init({ liffId: LIFF_ID, withLoginOnExternalBrowser: false });
             setIsLiffInitialized(true);
             if (liff.isLoggedIn()) {
               setIsLoggedIn(true);
