@@ -472,11 +472,12 @@ const Landing = () => {
                 </h3>
                 <Button 
                   size="lg"
-                  className="w-full h-14 text-base sm:text-lg bg-white text-blue-600 hover:bg-white/90 font-semibold rounded-xl shadow-lg"
+                  className="w-full h-auto min-h-12 py-2 px-4 text-sm md:text-base bg-white text-blue-600 hover:bg-white/90 font-semibold rounded-xl shadow-lg flex items-center justify-center"
                   onClick={item.onClick}
                 >
-                  <span className="hidden sm:inline">{item.buttonText}</span>
-                  <span className="sm:hidden">{'buttonTextShort' in item ? item.buttonTextShort : item.buttonText}</span>
+                  <span className="whitespace-normal break-words text-center leading-snug max-w-[200px]">
+                    {item.buttonText}
+                  </span>
                 </Button>
               </motion.div>
             ))}
