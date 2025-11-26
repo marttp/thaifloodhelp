@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react'
+import '../styles/map.css'
+
 import { useQuery } from '@tanstack/react-query'
-import { supabase } from '@/integrations/supabase/client'
-import { Report } from '@/types/report'
+import { Loader2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
+import BasemapControl from '@/components/BasemapControl'
 import InteractiveMap from '@/components/InteractiveMap'
 import MapControlPanel from '@/components/MapControlPanel'
-import BasemapControl from '@/components/BasemapControl'
-import { Loader2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
+import { supabase } from '@/integrations/supabase/client'
 import { getMapConfig } from '@/types/map'
-import '../styles/map.css'
+import { Report } from '@/types/report'
 
 const Map = () => {
   const [filteredReports, setFilteredReports] = useState<Report[]>([])

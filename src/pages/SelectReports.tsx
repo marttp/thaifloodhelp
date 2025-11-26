@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react'
+import { ArrowLeft, CheckCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+
+import { PhoneList } from '@/components/PhoneList'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { ArrowLeft, CheckCircle, AlertCircle, FileText } from 'lucide-react'
-import { toast } from 'sonner'
-import { PhoneList } from '@/components/PhoneList'
 
 interface ExtractedReport {
   name: string

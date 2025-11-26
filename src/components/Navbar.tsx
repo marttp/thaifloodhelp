@@ -1,33 +1,22 @@
-import { useNavigate, useLocation } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
 import {
-  Home,
-  Database,
   BarChart3,
-  HelpCircle,
-  Menu,
-  X,
   Code,
+  Database,
+  ExternalLink,
+  HelpCircle,
+  Home,
+  Info,
   LogIn,
   LogOut,
-  User,
+  Menu,
   Target,
-  Info,
-  ExternalLink,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+
 import logo from '@/assets/logo.png'
-import { useAuth } from '@/contexts/AuthContext'
-import { useLiff } from '@/contexts/LiffContext'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,6 +25,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import { useAuth } from '@/contexts/AuthContext'
+import { useLiff } from '@/contexts/LiffContext'
+import { cn } from '@/lib/utils'
 
 const Navbar = () => {
   const navigate = useNavigate()

@@ -1,15 +1,15 @@
 import { useMemo } from 'react'
 import {
+  Cell,
   ResponsiveContainer,
-  ScatterChart,
   Scatter,
+  ScatterChart,
+  Tooltip,
   XAxis,
   YAxis,
   ZAxis,
-  Tooltip,
-  Cell,
-  Legend,
 } from 'recharts'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { HELP_CATEGORIES, URGENCY_COLORS } from '@/constants/helpCategories'
 

@@ -1,22 +1,23 @@
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   AlertCircle,
-  Users,
   Baby,
-  UserRound,
-  Loader2,
-  RefreshCw,
   ChevronDown,
   ChevronRight,
-  MapPin,
   Heart,
+  Loader2,
+  MapPin,
+  RefreshCw,
+  UserRound,
+  Users,
 } from 'lucide-react'
-import { supabase } from '@/integrations/supabase/client'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import type { Report } from '@/types/report'
+
 import ReportHeatmap from '@/components/ReportHeatmap'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { supabase } from '@/integrations/supabase/client'
+import type { Report } from '@/types/report'
 
 interface Stats {
   total: number

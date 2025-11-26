@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import { Github } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 interface Contributor {
   id: number

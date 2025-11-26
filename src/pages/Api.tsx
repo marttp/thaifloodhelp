@@ -1,4 +1,11 @@
+import { AlertCircle, Check, Code, Copy, Send } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
+
+import { ApiKeyManager } from '@/components/ApiKeyManager'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -6,15 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Code, Send, Copy, Check, AlertCircle } from 'lucide-react'
-import { toast } from 'sonner'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { ApiKeyManager } from '@/components/ApiKeyManager'
+import { Textarea } from '@/components/ui/textarea'
 
 const Api = () => {
   const [ocrInput, setOcrInput] = useState('')

@@ -1,15 +1,16 @@
-import { useEffect, useRef } from 'react'
-import L from 'leaflet'
 import 'leaflet.markercluster'
 import '../styles/map.css'
-import { Report } from '@/types/report'
-import { useNavigate } from 'react-router-dom'
-import { MapPin } from 'lucide-react'
-import { BASEMAP_OPTIONS } from '@/types/map'
 
+import L from 'leaflet'
 // Fix for default marker icon issue with Webpack
 import icon from 'leaflet/dist/images/marker-icon.png'
 import iconShadow from 'leaflet/dist/images/marker-shadow.png'
+import { MapPin } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { BASEMAP_OPTIONS } from '@/types/map'
+import { Report } from '@/types/report'
 
 const DefaultIcon = L.icon({
   iconUrl: icon,

@@ -1,12 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import {
   AlertTriangle,
+  ArrowRight,
   FileText,
   Search,
   Users,
-  ArrowRight,
 } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const Help = () => {
   return (

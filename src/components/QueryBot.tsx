@@ -1,12 +1,13 @@
+import { Loader2, MessageSquare, Minimize2, Send, X } from 'lucide-react'
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Loader2, Send, MessageSquare, X, Minimize2 } from 'lucide-react'
-import { supabase } from '@/integrations/supabase/client'
 import { toast } from 'sonner'
+
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { supabase } from '@/integrations/supabase/client'
 
 interface Message {
   role: 'user' | 'assistant'

@@ -1,12 +1,11 @@
+import { motion } from 'framer-motion'
+import { MessageSquarePlus, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Search, MessageSquarePlus } from 'lucide-react'
-import { supabase } from '@/integrations/supabase/client'
+
 import heroFlood from '@/assets/hero-flood.jpg'
-import MissionSections from '@/components/MissionSections'
+import { Button } from '@/components/ui/button'
+import { supabase } from '@/integrations/supabase/client'
 
 const Landing = () => {
   const navigate = useNavigate()

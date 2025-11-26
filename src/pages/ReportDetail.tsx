@@ -1,32 +1,33 @@
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import {
-  MapPin,
-  Phone,
-  Users,
   AlertCircle,
   Calendar,
-  Share2,
-  Pencil,
   ExternalLink,
+  MapPin,
+  Pencil,
+  Phone,
+  Share2,
+  Users,
 } from 'lucide-react'
-import { supabase } from '@/integrations/supabase/client'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
-import { PhoneList } from '@/components/PhoneList'
+
 import { EditReportDialog } from '@/components/EditReportDialog'
-import type { Report } from '@/types/report'
+import { PhoneList } from '@/components/PhoneList'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { supabase } from '@/integrations/supabase/client'
 import {
   formatCaseId,
+  formatDate,
+  getCategoryLabel,
+  getStatusLabel,
+  getTotalPeople,
   getUrgencyBadgeClass,
   getUrgencyLabel,
-  getStatusLabel,
-  getCategoryLabel,
-  getTotalPeople,
-  formatDate,
 } from '@/lib/reportUtils'
+import type { Report } from '@/types/report'
 
 const ReportDetail = () => {
   const { id } = useParams<{ id: string }>()

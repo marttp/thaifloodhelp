@@ -1,6 +1,7 @@
-import type { Report } from '@/types/report'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { MapPin } from 'lucide-react'
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import type { Report } from '@/types/report'
 
 interface MapProps {
   reports: Report[]

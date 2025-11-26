@@ -1,19 +1,20 @@
 import { motion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
 import {
+  CheckCircle2,
+  Code,
   Copy,
   Database,
-  CheckCircle2,
-  Sparkles,
-  Shield,
-  Search,
-  MapPin,
-  HeartHandshake,
   Github,
-  Code,
+  HeartHandshake,
+  MapPin,
+  Search,
+  Shield,
+  Sparkles,
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+
 import socialIconsCluster from '@/assets/social-icons-cluster.svg'
+import { Button } from '@/components/ui/button'
 
 const MissionSections = () => {
   const navigate = useNavigate()

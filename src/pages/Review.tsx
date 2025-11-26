@@ -1,29 +1,19 @@
-import { useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
-  ArrowLeft,
-  Save,
   AlertCircle,
-  FileText,
-  LogIn,
-  Bell,
   AlertTriangle,
+  ArrowLeft,
+  Bell,
+  FileText,
   Loader2,
+  LogIn,
+  Save,
 } from 'lucide-react'
-import { DraggableMap } from '@/components/DraggableMap'
-import { supabase } from '@/integrations/supabase/client'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { formatPhoneNumber } from '@/lib/utils'
-import { useLiff } from '@/contexts/LiffContext'
-import { useAuth } from '@/contexts/AuthContext'
+
+import { DraggableMap } from '@/components/DraggableMap'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,6 +24,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { useAuth } from '@/contexts/AuthContext'
+import { useLiff } from '@/contexts/LiffContext'
+import { supabase } from '@/integrations/supabase/client'
+import { formatPhoneNumber } from '@/lib/utils'
 
 interface ExtractedData {
   name: string

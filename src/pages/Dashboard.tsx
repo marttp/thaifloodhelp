@@ -1,8 +1,29 @@
-import React, { useState, useEffect } from 'react'
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowUp,
+  ArrowUpDown,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Filter,
+  Loader2,
+  MapPin,
+  Pencil,
+  Phone,
+  RefreshCw,
+} from 'lucide-react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { toast } from 'sonner'
+
+import { EditReportDialog } from '@/components/EditReportDialog'
+import QueryBot from '@/components/QueryBot'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -19,33 +40,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import {
-  Filter,
-  Loader2,
-  ChevronDown,
-  ChevronRight,
-  Download,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-  MapPin,
-  RefreshCw,
-  ChevronLeft,
-  Pencil,
-  Phone,
-  ArrowLeft,
-} from 'lucide-react'
-import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'sonner'
-import QueryBot from '@/components/QueryBot'
-import { Checkbox } from '@/components/ui/checkbox'
-import { PhoneList } from '@/components/PhoneList'
-import ReportHeatmap from '@/components/ReportHeatmap'
-import { EditReportDialog } from '@/components/EditReportDialog'
-import type { Report } from '@/types/report'
-import { formatCaseId, getUrgencyBadgeClass } from '@/lib/reportUtils'
 import { HELP_CATEGORIES } from '@/constants/helpCategories'
-import Map from '@/components/ui/map'
+import { supabase } from '@/integrations/supabase/client'
+import { formatCaseId, getUrgencyBadgeClass } from '@/lib/reportUtils'
+import type { Report } from '@/types/report'
 
 const Dashboard = () => {
   const navigate = useNavigate()
