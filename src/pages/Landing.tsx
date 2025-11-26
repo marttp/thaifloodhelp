@@ -253,7 +253,7 @@ const Landing = () => {
               className="text-center md:text-left space-y-4"
             >
               <p className="text-gray-400 dark:text-gray-500 text-sm font-medium">แก้ไขปัญหาข้อมูล</p>
-              <h3 className="text-4xl md:text-5xl font-bold text-blue-500">จัดเรียง</h3>
+              <h3 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200">จัดเรียง</h3>
               <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-base md:text-lg">
                 ระบบรวมข้อมูลจากทุกแหล่งไว้ในที่เดียว ให้ AI ตัดข้อมูลซ้ำอัตโนมัติ
                 ค้นหาข้อมูลได้ง่ายและรวดเร็ว พร้อมจัดเรียงลำดับความเร่งด่วนให้อัตโนมัติ
