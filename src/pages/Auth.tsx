@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAuth } from '@/contexts/AuthContext'
+import { useLiff } from '@/contexts/LiffContext'
 import { useToast } from '@/hooks/use-toast'
 import { supabase } from '@/integrations/supabase/client'
 
@@ -22,6 +23,7 @@ const Auth = () => {
   const location = useLocation()
   const { toast } = useToast()
   const { user } = useAuth()
+  const { isLiffInitialized, isLoading: isLiffLoading, login: liffLogin } = useLiff()
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
