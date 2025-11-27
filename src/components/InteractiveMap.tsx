@@ -1,5 +1,6 @@
-import 'leaflet.markercluster'
 import '../styles/map.css'
+import 'leaflet'
+import 'leaflet.markercluster'
 
 import L from 'leaflet'
 // Fix for default marker icon issue with Webpack

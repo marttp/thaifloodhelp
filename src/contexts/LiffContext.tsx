@@ -1,9 +1,12 @@
+import { type SendMessagesParams } from '@liff/send-messages'
 import liff from '@line/liff'
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react'
 
@@ -23,7 +26,13 @@ interface LiffContextType {
   isLoading: boolean
   login: () => void
   logout: () => void
-  shareTargetPicker: () => Promise<void>
+  shareTargetPicker: ({
+    messages,
+    text,
+  }: {
+    messages?: SendMessagesParams[number][]
+    text: string
+  }) => Promise<boolean>
   isShareAvailable: boolean
 }
 
@@ -31,14 +40,16 @@ const LiffContext = createContext<LiffContextType | undefined>(undefined)
 
 const LIFF_ID = import.meta.env.VITE_LIFF_ID || ''
 
-function mobileCheck(): boolean {
+const mobileCheck = (): boolean => {
   const userAgent = navigator.userAgent || ''
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     userAgent,
   )
 }
 
-export function LiffProvider({ children }: { children: ReactNode }) {
+const useLiffContext = () => {
+  const isInit = useRef(false)
+
   const [isLiffInitialized, setIsLiffInitialized] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isInLiffClient, setIsInLiffClient] = useState(false)
@@ -46,56 +57,58 @@ export function LiffProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    const initLiff = async () => {
+  const initializeLiff = useCallback(async () => {
+    try {
       if (!LIFF_ID) {
-        console.warn('LIFF_ID is not set. LIFF features will be disabled.')
-        setIsLoading(false)
+        throw new Error('LIFF_ID is not set')
+      }
+
+      const isInClient = liff.isInClient()
+      setIsInLiffClient(isInClient)
+
+      if (!isInClient) {
+        if (mobileCheck()) {
+          window.location.replace(`line://app/${LIFF_ID}`)
+          setTimeout(() => {
+            window.close()
+          }, 5000)
+          return
+        }
+      }
+
+      await liff.init({
+        liffId: LIFF_ID,
+        withLoginOnExternalBrowser: !isInClient,
+      })
+
+      setIsLiffInitialized(true)
+      console.log('LIFF initialized successfully')
+
+      if (liff.isLoggedIn()) {
+        setIsLoggedIn(true)
+        await fetchProfile()
+      } else if (!isInClient) {
+        liff.login()
         return
       }
-
-      try {
-        if (liff.isInClient()) {
-          await liff.init({ liffId: LIFF_ID })
-          setIsLiffInitialized(true)
-          setIsInLiffClient(true)
-          if (liff.isLoggedIn()) {
-            setIsLoggedIn(true)
-            await fetchProfile()
-          } else {
-            liff.login()
-          }
-        } else {
-          setIsInLiffClient(false)
-          if (mobileCheck()) {
-            window.location.replace(`line://app/${LIFF_ID}`)
-            setTimeout(() => {
-              window.close()
-            }, 5000)
-          } else {
-            await liff.init({
-              liffId: LIFF_ID,
-              withLoginOnExternalBrowser: true,
-            })
-            setIsLiffInitialized(true)
-            if (liff.isLoggedIn()) {
-              setIsLoggedIn(true)
-              await fetchProfile()
-            }
-          }
-        }
-      } catch (err) {
-        console.error('LIFF initialization failed:', err)
-        setError(
-          err instanceof Error ? err.message : 'LIFF initialization failed',
-        )
-      } finally {
-        setIsLoading(false)
-      }
+    } catch (err) {
+      console.error('LIFF initialization failed:', err)
+      setError(
+        err instanceof Error ? err.message : 'LIFF initialization failed',
+      )
+    } finally {
+      setIsLoading(false)
     }
-
-    initLiff()
   }, [])
+
+  useEffect(() => {
+    if (isInit.current) {
+      return
+    }
+    isInit.current = true
+
+    initializeLiff()
+  }, [initializeLiff])
 
   const fetchProfile = async () => {
     try {
@@ -127,43 +140,49 @@ export function LiffProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const shareTargetPicker = async () => {
+  const shareTargetPicker = async ({
+    messages = [],
+    text,
+  }: {
+    messages?: SendMessagesParams[number][]
+    text: string
+  }) => {
     if (!isLiffInitialized) {
       console.warn('LIFF is not initialized')
-      return
+      return false
     }
 
     // If not in LIFF client and not logged in, redirect to LINE login first
-    if (!liff.isInClient() && !liff.isLoggedIn()) {
+    if (!liff.isLoggedIn()) {
       liff.login()
-      return
+      return false
     }
 
     if (!liff.isApiAvailable('shareTargetPicker')) {
       console.warn('ShareTargetPicker is not available')
       // Fallback: open LINE share URL
-      const shareUrl = 'https://miniapp.line.me/2008569116-rGyQw3mA'
-      const shareText = `ช่วยกันส่งข้อมูลน้ำท่วมผ่าน AI Platform นี้ครับ
-หากพบโพสต์ขอความช่วยเหลือในโซเชียลฯ ฝากนำมากรอกในลิงก์นี้ เพื่อให้ข้อมูลเป็นระบบและช่วยเหลือได้ไวขึ้นครับ
-
-${shareUrl}
-#น้ำท่วม #TechForGood #ThaiFloodHelp #น้ำท่วมไทย`
-      const lineShareUrl = `https://line.me/R/share?text=${encodeURIComponent(shareText)}`
+      const lineShareUrl = `https://line.me/R/share?text=${encodeURIComponent(text)}`
       window.open(lineShareUrl, '_blank')
-      return
+      return false
     }
 
     try {
-      await liff.shareTargetPicker([
-        {
+      if (messages.length === 0) {
+        messages.push({
           type: 'text',
-          text: `ช่วยกันส่งข้อมูลน้ำท่วมผ่าน AI Platform นี้ครับ
-หากพบโพสต์ขอความช่วยเหลือในโซเชียลฯ ฝากนำมากรอกในลิงก์นี้ เพื่อให้ข้อมูลเป็นระบบและช่วยเหลือได้ไวขึ้นครับ
+          text,
+        })
+      }
 
-https://miniapp.line.me/2008569116-rGyQw3mA
-#น้ำท่วม #TechForGood #ThaiFloodHelp #น้ำท่วมไทย`,
-        },
-      ])
+      messages = messages.slice(0, 5) // LIFF allows max 5 messages
+
+      const result = await liff.shareTargetPicker(messages)
+
+      if (result) {
+        console.log('ShareTargetPicker result:', result)
+        return result.status === 'success'
+      }
+      return false
     } catch (err) {
       console.error('ShareTargetPicker error:', err)
       throw err
@@ -173,21 +192,25 @@ https://miniapp.line.me/2008569116-rGyQw3mA
   const isShareAvailable =
     isLiffInitialized && (liff.isApiAvailable?.('shareTargetPicker') || true)
 
+  return {
+    isLiffInitialized,
+    isLoggedIn,
+    isInLiffClient,
+    profile,
+    error,
+    isLoading,
+    login,
+    logout,
+    shareTargetPicker,
+    isShareAvailable,
+  }
+}
+
+export function LiffProvider({ children }: { children: ReactNode }) {
+  const liffContextValue = useLiffContext()
+
   return (
-    <LiffContext.Provider
-      value={{
-        isLiffInitialized,
-        isLoggedIn,
-        isInLiffClient,
-        profile,
-        error,
-        isLoading,
-        login,
-        logout,
-        shareTargetPicker,
-        isShareAvailable,
-      }}
-    >
+    <LiffContext.Provider value={liffContextValue}>
       {children}
     </LiffContext.Provider>
   )
